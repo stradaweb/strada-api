@@ -18,7 +18,7 @@ const addComanda = async (param) => {
     try {
         let { codigo, fecha, mensaje, id_usuario, id_mesa } = param;
         let consulta =  "CALL sp_insert_comanda(?,?,?,?,?)";
-        let sql = mysql.format(consulta, [codigo, fecha, mensaje, id_usuario, id_mesa]);
+        let sql = mysql.format(consulta, [codigo, fecha, mensaje, id_mesa, id_usuario]);
         let respuesta = await Queryexec.exesql(sql);
         respuesta = respuesta[0];
         return respuesta;

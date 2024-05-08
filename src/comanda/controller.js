@@ -40,7 +40,7 @@ const addComanda = async (req, res) => {
                 Response.error(res, new createError[400]());
             } else {
                 const fecha = moment().format('YYYY-MM-DD HH:mm:ss');
-                const codigo = "com-" + moment().format('YYYYMMDD-HHmmss');
+                const codigo = "Com-" + moment().format('YYMMDD-HHmm');
 
                 let param = { codigo, fecha, mensaje, id_usuario, id_mesa };
                 let respuesta = await ComandaService.addComanda(param);
