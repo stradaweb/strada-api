@@ -21,6 +21,10 @@ app.use(logErrors);
 app.use(clientErrorHandler);
 app.use(errorHandler);
 
+app.get("/", (req,res) => {
+    res.send("Pagina de inicio")
+})
+
 LoginAPI(app);
 MenuAPI(app);
 SeccionAPI(app);
