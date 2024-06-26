@@ -6,7 +6,7 @@ const router = express.Router();
 
 module.exports.DetComandaAPI = (app) => {
   router
-    .get("/", DetComandaController.allDetComanda)
+    .get("/:idcomanda", DetComandaController.allDetComanda)
     .post("/create", DetComandaController.addDetComanda)
     .post("/update", DetComandaController.updateDetComanda)
     .put("/delete", DetComandaController.deleteDetComanda)

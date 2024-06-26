@@ -4,9 +4,14 @@ const debug = require("debug")("app:module-service-comanda");
 
 class ComandaService {
 
-    async allComanda () {
+    async allComanda (rol) {
         try {
-            let consulta =  "SELECT * FROM view_list_comanda";
+            let consulta =  "";
+            if(rol == 2){
+                consulta = "SELECT * FROM view_list_comanda";
+            } else if(rol == 3) {
+                consulta = "SELECT * FROM view_list_comanda WHERE estado = 2";
+            }
             let sql = mysql.format(consulta);
             let respuesta = await Query.execute(sql);
             // respuesta = respuesta[0];
@@ -42,10 +47,15 @@ class ComandaService {
         }
     };
     
-    async statusComanda (id, estado) {
+    async statusComanda (id, rol) {
         try {
-            let consulta =  "UPDATE comanda SET estado = ? WHERE id_comanda = ?";
-            let sql = mysql.format(consulta, [estado, id]);
+            let consulta = '';
+            if(rol == 2){
+                consulta =  "call sp_status_comanda(?)";
+            }else{
+                consulta =  "UPDATE comanda SET estado = 3 WHERE id_comanda = ?";
+            }
+            let sql = mysql.format(consulta, id);
             let respuesta = await Query.execute(sql);
             // respuesta = respuesta[0];
             return respuesta;

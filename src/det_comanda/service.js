@@ -6,8 +6,21 @@ class DetComandaService {
 
     async allDetComanda (id_comanda) {
         try {
-            let consulta =  "SELECT d.id_detcomanda, id_menu, cantidad, mensaje FROM detallecomanda d INNER JOIN menu m ON d.id_menu = m.id_menu WHERE d.id_comanda = ?";
+            let consulta =  `SELECT d.id_detcomanda, m.nombre, m.precio, d.cantidad, d.mensaje, (m.precio * d.cantidad) AS totalitem 
+                            FROM detallecomanda d INNER JOIN menu m ON d.id_menu = m.id_menu WHERE d.id_comanda = ?`;
             let sql = mysql.format(consulta, id_comanda);
+            let respuesta = await Query.execute(sql);
+            return respuesta;
+        } catch (error) {
+            return error;
+        }
+    };
+    
+    async allDetComandaCocinero (ids, placeholders) {
+        try {
+            let consulta =  `SELECT d.id_detcomanda, d.id_comanda, m.nombre, d.cantidad, d.mensaje FROM detallecomanda d 
+                            INNER JOIN menu m ON d.id_menu = m.id_menu WHERE d.id_comanda IN(${placeholders})`;
+            let sql = mysql.format(consulta, ids);
             let respuesta = await Query.execute(sql);
             return respuesta;
         } catch (error) {

@@ -9,11 +9,11 @@ class DetComandaController {
     async allDetComanda (req, res) {
         try {
             const datosUsuario = await ServiceToken.ValidateToken(req, res);
-    
+
             if (datosUsuario == undefined) {
                 Response.error(res, datosUsuario);
             } else {
-                let { id_comanda } = req.body;
+                let id_comanda = req.params.idcomanda;
                 if (
                     id_comanda == undefined
                 ) {

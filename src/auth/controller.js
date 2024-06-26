@@ -21,7 +21,8 @@ class AuthController {
                     Response.error(res, new createError[400]());
                 } else {
                     let userData = {
-                        id: data.id_usuario
+                        id: data[0].id_usuario,
+                        rol: data[0].rol
                     }
                     const token = jwt.sign(userData, Config.secrettokenjwt, {
                         expiresIn: "12h"

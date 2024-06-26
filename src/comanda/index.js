@@ -9,7 +9,7 @@ module.exports.ComandaAPI = (app) => {
     .get("/", ComandaController.allComanda)
     .post("/create", ComandaController.addComanda)
     .post("/update", ComandaController.updateComanda)
-    .put("/status", ComandaController.statusComanda)
+    .put("/status/:idcomanda", ComandaController.statusComanda)
 
     app.use('/api/comanda', router);
 }

@@ -12,6 +12,7 @@ const { SeccionAPI } = require('./src/seccion/index');
 const { MesaAPI } = require('./src/mesa/index');
 const { ComandaAPI } = require('./src/comanda/index');
 const { DetComandaAPI } = require('./src/det_comanda/index');
+const { PayComandaAPI } = require('./src/pago/index');
 
 const app = express();
 
@@ -31,6 +32,7 @@ SeccionAPI(app);
 MesaAPI(app);
 ComandaAPI(app);
 DetComandaAPI(app);
+PayComandaAPI(app);
 
 function logErrors(err, req, res, next) {
     next(err);

@@ -11,12 +11,20 @@ class ComandaController {
     async allComanda (req, res) {
         try {
             const datosUsuario = await ServiceToken.ValidateToken(req, res);
-    
             if (datosUsuario == undefined) {
                 Response.error(res, datosUsuario);
             } else {
-                let listado = await ComandaService.allComanda();
-                Response.success(res, 200, "Lista de comandas", listado);
+                let listado = await ComandaService.allComanda(datosUsuario.rol);
+                let ids = listado.map((e) => e.id_comanda);
+                let placeholders = ids.map(() => '?').join(', ');
+                let detlistado = await DetComandaService.allDetComandaCocinero(ids, placeholders);
+                let salida = listado.map((s) => {
+                    return {
+                        ...s,
+                        detalle: detlistado.filter((x) => x.id_comanda == s.id_comanda)
+                    }
+                })
+                Response.success(res, 200, "Lista de comandas", salida);
             }
         } catch (error) {
             // debug(error);
@@ -27,7 +35,7 @@ class ComandaController {
     async addComanda (req, res) {
         try {
             const datosUsuario = await ServiceToken.ValidateToken(req, res);
-    
+
             if (datosUsuario == undefined) {
                 Response.error(res, datosUsuario);
             } else {
@@ -90,20 +98,18 @@ class ComandaController {
     async statusComanda (req, res) {
         try {
             const datosUsuario = await ServiceToken.ValidateToken(req, res);
-    
             if (datosUsuario == undefined) {
                 Response.error(res, datosUsuario);
             } else {
-                let { id, estado } = req.body;
+                let id = req.params.idcomanda;
     
                 if (
-                    id == undefined ||
-                    estado == undefined 
+                    id == undefined
                 ) {
                     Response.error(res, new createError[400]());
                 } else {
-                    let respuesta = await ComandaService.statusComanda(id, estado);
-                    if (respuesta.affectedRows == 1)
+                    let respuesta = await ComandaService.statusComanda(id, datosUsuario.rol);
+                    if (respuesta.affectedRows == 1 || respuesta.affectedRows == 2)
                         Response.success(res, 200, "Estado comanda");
                     else Response.error(res, new createError[400]());
                 }
